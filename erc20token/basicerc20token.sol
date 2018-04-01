@@ -1,7 +1,7 @@
 pragma solidity ^0.4.16;
 
 import "./owned.sol";
-import "./tokenRecipient.sol";
+import "./tokenrecipient.sol";
 
 contract BasicERC20Token is Owned {
     string public name;
