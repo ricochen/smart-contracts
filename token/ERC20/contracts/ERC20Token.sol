@@ -1,9 +1,9 @@
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.18;
 
 import "zeppelin-solidity/contracts/ownership/Ownable.sol";
 import "zeppelin-solidity/contracts/math/SafeMath.sol";
-import "zeppelin-solidity/contracts/token/StandardToken.sol";
-import "zeppelin-solidity/contracts/token/BurnableToken.sol";
+import "zeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
+import "zeppelin-solidity/contracts/token/ERC20/BurnableToken.sol";
 
 
 /**
@@ -46,7 +46,7 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
 
     /**
      * @dev Check if the address is a valid destination to transfer tokens to
-     * @param to The address to send tokens to
+     * @param _to The address to send tokens to
      * The zero address is not valid
      * The contract itself should not receive tokens
      * The owner has all the initial tokens, but cannot receive any back
@@ -59,17 +59,19 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
         require(_to != owner);
         require(_to != adminAddr);
         require(_to != ICOAddr);
+        _;
     }
 
     /**
-     * @param admin The address of the admin
+     * @dev constructor
+     * @param _admin The address of the admin
      */
-    function constructor(address _admin) public {
+    function RicoToken(address _admin) public {
         totalSupply_ = INITIAL_SUPPLY;
 
         // Mint tokens
         balances[msg.sender] = totalSupply_;
-        emit Transfer(address(0), msg.sender, totalSupply_);
+        Transfer(address(0), msg.sender, totalSupply_);
 
         // Approve allowance for admin
         adminAddr = _admin;
@@ -78,8 +80,9 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
 
     /**
      * @dev Set ICO contract address and approves an allowance of tokens from the ICO allowance supply to transfer tokens
-     * @param _ICOAddress The address of the ICO contract
+     * @param _ICOAddr The address of the ICO contract
      * @param _amountForSale The amount of tokens for sale in the ICO
+     * @return A boolean value specifying whether setting the ICO was successful
      */
     function setICO(address _ICOAddr, uint256 _amountForSale) external onlyOwner onlyWhenICOAddrNotSet returns (bool) {
         require(!transferEnabled);
@@ -88,8 +91,9 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
         uint256 amount = (_amountForSale == 0) ? ICO_ALLOWANCE : _amountForSale;
         require(amount <= ICO_ALLOWANCE);
 
-        approve(_ICOAddr, amount);
         ICOAddr = _ICOAddr;
+        approve(ICOAddr, amount);
+        return true;
     }
 
     /**
@@ -126,10 +130,7 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
 
     /**
      * @dev Overrides the burn function to only be called when transferEnabled
-     * @param _from The address to transfer tokens from
-     * @param _to The address to transfer tokens to
-     * @param _value The amount of tokens to transfer
-     * @return A boolean value specifying whether the transfer was successful
+     * @param _value The amount of tokens to burn
      */
     function burn(uint256 _value) public {
         require(transferEnabled || msg.sender == owner);
