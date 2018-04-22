@@ -1,7 +1,7 @@
 {
-  "name": "ERC20",
+  "name": "erc20",
   "version": "1.0.0",
-  "description": "",
+  "description": "`git clone https://github.com/ricochen/smart-contracts.git`",
   "main": "truffle-config.js",
   "directories": {
     "test": "test"
@@ -13,6 +13,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "web3": "^1.0.0-beta.34",
     "zeppelin-solidity": "1.8.0"
+  },
+  "devDependencies": {
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.26.0"
   }
 }

@@ -100,7 +100,7 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
      * @dev Enables any token holder to transfer tokens after the ICO
      * Once enabled cannot be disabled
      */
-    function enableTransfers() external onlyOwner {
+    function enableTransfer() external onlyOwner {
         transferEnabled = true;
 
         // End the ICO
