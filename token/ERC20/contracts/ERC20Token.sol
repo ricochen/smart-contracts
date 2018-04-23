@@ -46,7 +46,7 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
 
     /**
      * @dev Check if the address is a valid destination to transfer tokens to
-     * @param _to The address to send tokens to
+     * @param _to The address to transfer tokens to
      * The zero address is not valid
      * The contract itself should not receive tokens
      * The owner has all the initial tokens, but cannot receive any back
@@ -126,7 +126,7 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
      */
     function transferFrom(address _from, address _to, uint256 _value) public onlyWhenTransferEnabled validDestination(_to) returns (bool) {
         return super.transferFrom(_from, _to, _value);
-    }  
+    }
 
     /**
      * @dev Overrides the burn function to only be called when transferEnabled
