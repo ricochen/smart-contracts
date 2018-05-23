@@ -1,9 +1,9 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.4.23;
 
-import "zeppelin-solidity/contracts/ownership/Ownable.sol";
-import "zeppelin-solidity/contracts/math/SafeMath.sol";
-import "zeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
-import "zeppelin-solidity/contracts/token/ERC20/BurnableToken.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/BurnableToken.sol";
 
 
 /**
@@ -66,12 +66,12 @@ contract RicoToken is StandardToken, BurnableToken, Ownable {
      * @dev constructor
      * @param _admin The address of the admin
      */
-    function RicoToken(address _admin) public {
+    constructor(address _admin) public {
         totalSupply_ = INITIAL_SUPPLY;
 
         // Mint tokens
         balances[msg.sender] = totalSupply_;
-        Transfer(address(0), msg.sender, totalSupply_);
+        emit Transfer(address(0), msg.sender, totalSupply_);
 
         // Approve allowance for admin
         adminAddr = _admin;
